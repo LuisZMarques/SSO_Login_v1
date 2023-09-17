@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SSO - App 3</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue-router@4.0.11/dist/vue-router.global.prod.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jwt-decode@3.1.2/build/jwt-decode.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <router-view></router-view>
+        <div>
+            <router-link to="/dashboard">Dashboard</router-link> |
+            <router-link to="/products">Products</router-link> |
+            <router-link to="/home">Home</router-link>
+            
+        </div>
+    </div>
+</body>
+    <script>
+        const { createApp, ref } = Vue;
+        const { createRouter, createWebHashHistory } = VueRouter;
+
+        // Define Vue components for the routes
+        const Dashboard = { template: '<div>Dashboard Page - Store 3</div>' };
+        const Products = { template: '<div>Products Page - Store 3</div>' };
+        const Home = { template: '<div>Home Page - Store 3</div>' };
+
+        const app = createApp({
+        });
+
+        const router = createRouter({
+            history: createWebHashHistory(),
+            routes: [
+                { path: '/dashboard', component: Dashboard },
+                { path: '/products', component: Products },
+                { path: '/home', component: Home },
+            ],
+        });
+
+        router.beforeEach((to, from, next) => {           
+            const urlParams = new URLSearchParams(window.location.search);
+            const token = urlParams.get('token');
+
+            const tokenIsValid = (token) => {
+                if (token == null || token == undefined) {
+                    return false;
+                }
+                const decodedToken = jwt_decode(token);
+                
+                const currentTimeInSeconds = Math.floor(Date.now() / 1000); // Current time in seconds
+                const tokenExpirationTime = decodedToken.exp;
+
+                return currentTimeInSeconds < tokenExpirationTime;
+            }; 
+
+            if (tokenIsValid(token)) {
+                next(); 
+            } else {
+               window.location.href = 'http://localhost:8000';
+            }
+        });
+
+        app.use(router);
+        app.mount("#app");
+    </script>
+</body>
+</html>
