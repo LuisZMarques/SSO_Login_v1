@@ -24,3 +24,9 @@ App2:
 App3:
 
 -> python -m http.server --bind 127.0.0.1 3000
+
+
+Login app credentials:
+
+email: user1@example.com ; user2@example.com ... (10 users)
+pw: 123
