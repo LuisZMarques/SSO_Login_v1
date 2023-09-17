@@ -1,1 +1,26 @@
-# SSO_Login_v1
+(Only tested this way)
+
+Brave Browser (Mozzila not working properly)
+
+Server and App 1 2 3 run on the CLI.
+Login App needs to run with Live Server Extension on VSCode.
+
+
+Server Folder Commands :
+
+-> node server.js (PORT 5000)
+
+
+App 1 2 3 Folder Commands :
+
+App1:
+
+-> python -m http.server --bind 127.0.0.1 1000
+
+App2:
+
+-> python -m http.server --bind 127.0.0.1 2000
+
+App3:
+
+-> python -m http.server --bind 127.0.0.1 3000
